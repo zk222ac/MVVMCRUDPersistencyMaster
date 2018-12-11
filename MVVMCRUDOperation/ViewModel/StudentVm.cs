@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using MVVMCRUDOperation.DataCollection;
 using MVVMCRUDOperation.Model;
 using MVVMCRUDOperation.Persistency;
@@ -40,6 +42,8 @@ namespace MVVMCRUDOperation.ViewModel
         public RelayCommand UpdateStudentCommand { get; set; }
         public RelayCommand DeleteStudentCommand { get; set; }
         public RelayCommand RefreshStudentCommand { get; set; }
+        public ICommand SearchStudentCommand { get; set; }
+
         public RelayCommand GoPage1Command { get; set; }
 
         // File Persistency 
@@ -50,6 +54,9 @@ namespace MVVMCRUDOperation.ViewModel
         public readonly FrameNavigate FrameNavigate;
         // User singleton property 
         public readonly Singleton UserSingleton;
+
+        // Search List Observable collection
+        public ObservableCollection<Student> SearchListStudent;
         public StudentVm()
         {
             // Data Persistency 
@@ -68,8 +75,13 @@ namespace MVVMCRUDOperation.ViewModel
             UpdateStudentCommand = new RelayCommand(DoUpdateStudent);
             DeleteStudentCommand = new RelayCommand(DoDeleteStudent);
             RefreshStudentCommand = new RelayCommand(DoRefreshStudent);
+            // remember here Passing delegate method as a object parameter
+            SearchStudentCommand = new RelayCommandArg(DoSearchStudent);
+
             GoPage1Command = new RelayCommand(DoGoPage1);
            
+            // Search List Student
+            SearchListStudent = new ObservableCollection<Student>();
 
             // Frame navigation Object initialization 
             FrameNavigate = new FrameNavigate();
@@ -120,6 +132,46 @@ namespace MVVMCRUDOperation.ViewModel
             
             // Here I am using Property change Interface because it is changes the model property here
             OnPropertyChanged(nameof(ListStudents));
+        }
+
+        // Search Student By Name 
+        // remember this time we pass delegate method as a object 
+        public void DoSearchStudent(object obj)
+        {
+            try
+            {
+                string name = obj as string;
+                if (ListStudents != null)
+                {
+                    foreach (var stu in ListStudents)
+                    {
+                        if (stu.Name.ToUpper() == name?.ToUpper())
+                        {
+                            SearchListStudent = new ObservableCollection<Student>
+                            {
+                                new Student(stu.Id, stu.Name, stu.Country, stu.Dob, stu.City, stu.ZipCode, stu.Cpr,
+                                    stu.ImageUrl)
+                            };
+
+                        }
+                    }
+
+                    // we check if search is found then assign this search list to ListStudent otherwise make a null to this ListStudent
+                    if (SearchListStudent != null)
+                    {
+                        ListStudents = SearchListStudent;
+                        OnPropertyChanged(nameof(ListStudents));
+                    }
+                    else
+                    {
+                        ListStudents.Clear();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Write(e);
+            }
         }
         public void DoGoPage1()
         {

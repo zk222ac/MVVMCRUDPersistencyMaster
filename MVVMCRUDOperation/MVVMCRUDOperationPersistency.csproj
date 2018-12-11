@@ -104,6 +104,7 @@
     <Compile Include="ViewModel\NotifyPropertyChangeClass.cs" />
     <Compile Include="ViewModel\Page1Vm.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="ViewModel\RelayCommandArg.cs" />
     <Compile Include="ViewModel\StudentVm.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

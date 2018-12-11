@@ -19,7 +19,7 @@
             <ViewModel:StudentVm/>
         </Grid.DataContext>
 
-        <ListView HorizontalAlignment="Left" Height="500" Margin="10,35,0,0" 
+        <ListView Name="ListView" HorizontalAlignment="Left" Height="500" Margin="10,35,0,0" 
                   VerticalAlignment="Top" Width="400" 
                   ItemsSource="{Binding ListStudents }"
                   SelectedItem="{Binding SelectedItemStudent, Mode=TwoWay}"
@@ -120,15 +120,25 @@
                 <!--Refresh button-->
                 <Button Content="Refresh List" 
                         Command="{Binding RefreshStudentCommand }"/>
+               
+                <!-- Page Navigation  -->
+                <Button Content="Go to Next Page1" Height="auto" 
+                        Command="{Binding GoPage1Command}"/>
 
             </StackPanel>
+          
 
-            <!-- Page Navigation  -->
-            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" BorderBrush="Black" BorderThickness="2">
+           
+            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal"  BorderBrush="Black" BorderThickness="2">
 
-                <Button Content="Go to Next Page1" 
-                        Command="{Binding GoPage1Command}"/>
-                
+                <!--Search TextBox-->
+
+                <TextBox Name="TxtSearchByName"  Width="150" HorizontalAlignment="Left" Height="30" Background="Aqua"  />
+                <!--Refresh button-->
+                <Button Content="Search By Name" 
+                        Command="{Binding SearchStudentCommand}"
+                        CommandParameter="{Binding ElementName=TxtSearchByName,Path=Text }"/>
+
             </StackPanel>
 
 
