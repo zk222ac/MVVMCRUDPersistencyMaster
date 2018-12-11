@@ -138,6 +138,7 @@
                 <Button Content="Search By Name" 
                         Command="{Binding SearchStudentCommand}"
                         CommandParameter="{Binding ElementName=TxtSearchByName,Path=Text }"/>
+                <TextBlock Text="Refresh List at least one time "/>
 
             </StackPanel>
 
